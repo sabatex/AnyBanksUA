@@ -1,8 +1,7 @@
 ﻿@page "/"
-@page "/clientbank1c8"
-@page "/bankservicefor1c8/clientbank1c8"
+@page "/bas"
+@page "/basbanksutility/bas"
 @using System.IO
-@using BankServiceFor1C8.Models
 @using Sabatex.BankStatementHelper
 @using sabatex.Extensions.ClassExtensions
 @using System.ComponentModel.DataAnnotations
@@ -12,12 +11,8 @@
 @inject IJSRuntime JSRuntime
 <PageTitle>Обробка банківських виписок</PageTitle>
 
-<RadzenAlert AlertStyle="AlertStyle.Warning" Variant="Variant.Flat" Shade="Shade.Lighter">
-    <p>УВАГА! Даний сайт припинить роботу через @((endSupport - DateTime.Now).Days) днів.</p>
-    <p>Для продовження роботи перейдіть на сайт <a href="https://sabatex.github.io/BASBanksUtility/">https://sabatex.github.io/BASBanksUtility/</a></p>
-</RadzenAlert>
 <p>
-    Дана програма призначена для перетворення виписок клієнтбанків (iFobs, iBank 2 UA, ПриватБанк, УКРГАЗБанк) України в формат придатний для завантаження програмами 1с8.х
+    Дана програма призначена для перетворення виписок клієнтбанків (iFobs, iBank 2 UA, ПриватБанк, УКРГАЗБанк) України в формат придатний для завантаження програмами BAS
 </p>
 
 <RadzenRow class="mt-1">
@@ -93,8 +88,6 @@
     string accountNumber = "";
     string error = "";
     List<ResultTask> makeFiles = new List<ResultTask>();
-
-    DateTime endSupport = new DateTime(2024, 12, 31);
 
     private Dictionary<EBankType, string> stringBankPresents = new Dictionary<EBankType, string>
         {

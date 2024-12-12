@@ -1,4 +1,4 @@
-﻿namespace AnyBanksUA.Models
+﻿namespace WebAppAnyBanksUA.Models
 {
     public class ResultTask
     {
