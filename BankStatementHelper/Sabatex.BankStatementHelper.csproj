@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <Version>2.0.3</Version>
+    <Company>sabatex</Company>
+    <Authors>Serhiy Lakas</Authors>
+    <Copyright>2018, Serhiy Lakas</Copyright>
+    <Description>Library to convert bank statements from the bank format to standard format BAS </Description>
+  </PropertyGroup>
+
+  
+   <ItemGroup>
+    <PackageReference Include="sabatex.Extensions" Version="6.0.3"></PackageReference>
+  </ItemGroup>
+  
+</Project>
