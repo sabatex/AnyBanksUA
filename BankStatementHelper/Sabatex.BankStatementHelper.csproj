@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 
-    <Version>3.0.0-rc1</Version>
+    <Version>3.0.0-rc2</Version>
     <Company>sabatex</Company>
     <Authors>Serhiy Lakas</Authors>
     <Copyright>2018, Serhiy Lakas</Copyright>
@@ -20,7 +20,7 @@
 		<PackageReference Include="sabatex.Extensions" Version="6.0.3"></PackageReference>
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
-		<PackageReference Include="sabatex.Extensions" Version="9.0.0-rc2"></PackageReference>
+		<PackageReference Include="sabatex.Extensions" Version="9.0.0"></PackageReference>
 	</ItemGroup>
 
 </Project>

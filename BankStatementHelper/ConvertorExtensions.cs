@@ -74,7 +74,8 @@ namespace Sabatex.BankStatementHelper
                 result.Append($"{debet(transaction.Summ)};");              //Дебет 
                 result.Append($"{credit(transaction.Summ)};");             //Кредит
                 result.Append($"{format(transaction.Description)};");      //Призначення платежу
-                result.Append($"0.00;");                                   //Гривневе покриття
+                result.Append($"0.00;");//Гривневе покриття
+                result.Append("\r\n"); 
             }
             return result.ToString();
         }
