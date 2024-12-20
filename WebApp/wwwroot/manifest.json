@@ -1,7 +1,7 @@
 {
-  "name": "BankServiceFor1C8",
-  "short_name": "BankServiceFor1C8",
-  "start_url": "/BankServiceFor1C8",
+  "name": "AnyBanksUA",
+  "short_name": "AnyBanksUA",
+  "start_url": "/AnyBanksUA",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#03173d",
