@@ -14,8 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: ls
-      run : ls -l -R
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v2
+      with:
+            dotnet-version: '9.0.x'
+      
+    - name: Restore dependencies
+      run: dotnet restore
       
     # changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
     - name: Change base-tag in index.html from / to AnyBanksUA
