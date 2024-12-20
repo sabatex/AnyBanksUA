@@ -1,13 +1,13 @@
-name: BankServiceFor1C8
+name: AnyBanksUA
 env:
-  PUBLISH_DIR: bin/Release/net6.0/publish/wwwroot
+  PUBLISH_DIR: bin/Release/net9.0/publish/wwwroot
 
 # Controls when the action will run
 on:
   push:
     branches: [ master ]
     paths:
-      - 'BankServiceFor1C8.csproj'
+      - 'WebAppAnyBanksUA.csproj'
 
 jobs:
   build:
@@ -18,8 +18,8 @@ jobs:
       run : ls -l -R
       
     # changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
-    - name: Change base-tag in index.html from / to BankServiceFor1C8
-      run: sed -i 's/<base href="\/" \/>/<base href="\/BankServiceFor1C8\/" \/>/g' wwwroot/index.html
+    - name: Change base-tag in index.html from / to AnyBanksUA
+      run: sed -i 's/<base href="\/" \/>/<base href="\/AnyBanksUA\/" \/>/g' wwwroot/index.html
 
     - name: Publish app
       run: dotnet publish -c Release
