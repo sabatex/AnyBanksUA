@@ -43,8 +43,9 @@ namespace sabatex.Tests.BankHelper
  
         }
         [Theory]
-        [InlineData("UA923052990000026008050334389", testFilePath + "/Privat24.csv", EBankType.PrivatUA, 21, "Privat24")]
-        public async void ParseBankStatement(string accNumber, string fileName, EBankType bankType, int lines, string name)
+        [InlineData(testFilePath + "/Privat24.csv", EBankType.PrivatUA, 21, "Privat24")]
+        [InlineData(testFilePath + "/Sense-Bank.csv", EBankType.SensBank, 32, "SensBank")]
+        public async void ParseBankStatement(string fileName, EBankType bankType, int lines, string name)
         {
             using (Stream stream = File.OpenRead(fileName))
             {
@@ -56,6 +57,7 @@ namespace sabatex.Tests.BankHelper
                         result.Add(item);
                     }
                     Assert.Equal(result.Count, lines);
+                    var s = result.GetAsSensBankCSV();
                 }   
                 
 

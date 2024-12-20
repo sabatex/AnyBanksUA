@@ -17,21 +17,34 @@
 
 <RadzenRow class="mt-1">
     <RadzenColumn >
+        <RadzenText>Формат банківської виписки</RadzenText>
         <RadzenRadioButtonList @bind-Value="@bankType" TValue="EBankType" Orientation="Radzen.Orientation.Vertical" class="rz-border-radius-1 rz-border-primary-dark ">
-    <Items>
-        @{
-            foreach (var eBank in stringBankPresents)
-            {
-                <RadzenRadioButtonListItem Text="@eBank.Value" Value=@eBank.Key class="ms-2 " />
-            }
-        }
+            <Items>
+                @{
+                    foreach (var eBank in stringBankPresents)
+                    {
+                        <RadzenRadioButtonListItem Text="@eBank.Value" Value=@eBank.Key class="ms-2 " />
+                    }
+                }
+            </Items>
+        </RadzenRadioButtonList>
+    </RadzenColumn>
+    <RadzenColumn>
+        <RadzenText>Формат вихідного файла</RadzenText>
+        <RadzenRadioButtonList @bind-Value="@resultType" TValue="ResultType" Orientation="Radzen.Orientation.Vertical" class="rz-border-radius-1 rz-border-primary-dark ">
+            <Items>
+                @{
+                    foreach (var result in resultTypes)
+                    {
+                        <RadzenRadioButtonListItem Text="@result.Value" Value=@result.Key class="ms-2 " />
+                    }
+                }
 
-    </Items>
-
-</RadzenRadioButtonList>
+            </Items>
+        </RadzenRadioButtonList>
     </RadzenColumn>
     <RadzenColumn class="d-flex">
-    <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.SpaceBetween" Style="height:auto">
+        <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.SpaceBetween" Style="height:auto">
             <RadzenPanel AllowCollapse="true" Collapsed="true">
                 <HeaderTemplate>
                     <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">Протестовано для конфігурацій:</RadzenText>
@@ -63,7 +76,7 @@
             <InputFile id="uploadFiles" hidden multiple OnChange="HandleSelection" />
 
 
-    </RadzenStack>
+        </RadzenStack>
     </RadzenColumn>
 </RadzenRow>
 
@@ -78,13 +91,14 @@
             <RadzenDataGridColumn TItem="ResultTask" Property="Result" Title="Результат обробки" />
         </Columns>   
     </RadzenDataGrid>    
- 
+
 
     <RadzenAlert>Файли знаходяться в папці Завантаження</RadzenAlert>
- }
+}
 
 @code{
-    private EBankType bankType = EBankType.iBankUA;
+    private EBankType bankType = EBankType.SensBank;
+    private ResultType resultType = ResultType.CSV_IBankUA;
     string accountNumber = "";
     string error = "";
     List<ResultTask> makeFiles = new List<ResultTask>();
@@ -93,15 +107,22 @@
         {
             //{EBankType.iFobsUA_XML, "iFobs формат файла XML (ZIP)"},
             //{EBankType.iFobsUA_TXT, "iFobs формат файла TXT (DAT)" },
-            {EBankType.iFobs,"iFobs формат вивантаження XML/TXT (XML,DAT,ZIP)" },
-            {EBankType.iBankUA, "iBank формат файла ТХТ (csv)"},
+            //{EBankType.iFobs,"iFobs формат вивантаження XML/TXT (XML,DAT,ZIP)" },
+            //{EBankType.iBankUA, "iBank формат файла ТХТ (csv)"},
             {EBankType.PrivatUA,"ПриватБанк формат файла ТХТ (csv)"},
-            {EBankType.OtpBankSK,"OTP Bank Словатчина формат  файла CSV"},
-            {EBankType.PrimaBankSK,"PrimaBanka Словатчина формат  файла CSV"},
-            {EBankType.UkrGazBank,"УКРГАЗБАНК формат  файла CSV"},
-            {EBankType.Oschad,"Ощад банк формат  файла CSV"}
+            {EBankType.SensBank,"СенсБанк формат файла ТХТ (csv)"}
+            //{EBankType.OtpBankSK,"OTP Bank Словатчина формат  файла CSV"},
+            //{EBankType.PrimaBankSK,"PrimaBanka Словатчина формат  файла CSV"},
+            //{EBankType.UkrGazBank,"УКРГАЗБАНК формат  файла CSV"},
+            //{EBankType.Oschad,"Ощад банк формат  файла CSV"}
         };
-
+    private Dictionary<ResultType, string> resultTypes = new Dictionary<ResultType, string>
+        {
+            {ResultType.BAS,"Результат в форматі BAS/1C" },
+            {ResultType.JSON,"Результат в форматі JSON"},
+            {ResultType.CSV_PrivatBank,"Результат в форматі ТХТ (csv) ПриватБанк"},
+            {ResultType.CSV_IBankUA,"Результат в форматі ТХТ (csv) IBankUA (Комінвест)"}
+         };
     async Task HandleSelection(InputFileChangeEventArgs files)
     {
         byte[] buffer = new byte[512000];
@@ -113,19 +134,43 @@
             var resultTask = new ResultTask
                 {
                     InputFile = f.Name,
-                    OutPutFile = f.Name + ".xml",
+                    OutPutFile = f.Name,
                     Result = "Ok"
                 };
             try
             {
+                var result = new List<Sabatex.BankStatementHelper.Models.BankTransaction>();
                 // get coverter
-                var converter = ClientBankTo1CFormatConversion.GetConvertor(bankType);
-                await converter.ImportFromFileAsync(f.OpenReadStream(), Path.GetExtension(f.Name));
-                if (converter.Count() > 0)
-                    await JSRuntime.InvokeAsync<object>("sabatex.downloadFile", resultTask.OutPutFile, converter.GetAsXML());
-                else
-                    resultTask.Result = "Пропущений";
+                await using (var collection = ConvertorExtensions.GetConvertor(bankType, f.OpenReadStream(), Path.GetExtension(f.Name)))
+                {
 
+                    await foreach (var item in collection)
+                    {
+                        result.Add(item);
+                    }
+                }
+
+                string txt = string.Empty;
+                switch (resultType){
+                    case ResultType.CSV_IBankUA:
+                        txt = result.GetAsSensBankCSV();
+                        resultTask.OutPutFile = f.Name + ".ibank.csv";
+                        break;
+                    case ResultType.CSV_PrivatBank:
+                        txt = result.GetAsPrivatCSV();
+                        resultTask.OutPutFile = f.Name + ".privat.csv";
+                        break;
+                    case ResultType.JSON:
+                        txt = System.Text.Json.JsonSerializer.Serialize(result);
+                        resultTask.OutPutFile = f.Name + ".json";
+                        break;
+                    case ResultType.BAS:
+                        txt = "";
+                        resultTask.OutPutFile = f.Name + ".xml";
+                        break;
+                }
+                await JSRuntime.InvokeAsync<object>("sabatex.downloadFile", resultTask.OutPutFile, txt);
+  
             }
             catch (Exception e)
             {
@@ -136,10 +181,10 @@
     }
 
 
-    void BankTypeChange(EBankType value)
-    {
-        bankType = value;
-    }
+    // void BankTypeChange(EBankType value)
+    // {
+    //     bankType = value;
+    // }
 
     override protected  void OnInitialized()
     {

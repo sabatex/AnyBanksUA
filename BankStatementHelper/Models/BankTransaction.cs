@@ -31,7 +31,7 @@ namespace Sabatex.BankStatementHelper.Models
         /// <summary>
         /// Дата операції 11.11.2024
         /// </summary>
-        public string DateOperation { get; set; }
+        public DateTime DateOperation { get; set; }
         /// <summary>
         /// МФО банку 123456
         /// </summary>

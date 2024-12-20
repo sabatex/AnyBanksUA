@@ -14,19 +14,16 @@ using System.Threading.Tasks;
 
 namespace Sabatex.BankStatementHelper;
 
-public class PrivatUAConverter : BaseConvertor
+public class SensBankUAConverter : BaseConvertor
 {
     readonly StreamReader reader;
     string? line;
     int lineCounter = 0;
  
-    public PrivatUAConverter(Stream stream, string fileExt, string accNumber = "") : base(stream, fileExt, accNumber)
+    public SensBankUAConverter(Stream stream, string fileExt, string accNumber = "") : base(stream, fileExt, accNumber)
     {
         reader = new StreamReader(_stream, new Encoding1251());
     }
-
-
-
 
     string getValue(ref int pos, string s, string valueName)
     {
@@ -46,7 +43,11 @@ public class PrivatUAConverter : BaseConvertor
         {
             pos = s.IndexOf(';', start);
             if (pos == -1)
-                throw new Exception(ErrorStrings.DetermineEndDelimiterForValue(valueName));
+            {
+                // check end
+                pos =s.Length;
+                return s.Substring(start);
+            }
             return s.Substring(start, pos++ - start);
         }
 
@@ -87,7 +88,7 @@ public class PrivatUAConverter : BaseConvertor
     DateTime getDateValue(ref int pos, string s, string valueName)
     {
         var ts = getValue(ref pos, s, valueName);
-        if (!DateTime.TryParse(ts,out DateTime result))
+        if (!DateTime.TryParse(ts, out DateTime result))
             throw new Exception(ErrorStrings.ConvertDataTo1C8FormatForField("'Дата операції'", ts));
         else
             return result;
@@ -108,6 +109,7 @@ public class PrivatUAConverter : BaseConvertor
                 return result;
         }
     }
+
     public override BankTransaction Current 
     {
         get
@@ -118,19 +120,31 @@ public class PrivatUAConverter : BaseConvertor
             }
             var result = new BankTransaction();
             int pos = 0;
-            result.EDRPOU = getValue(ref pos, line, "ЄДРПОУ");
-            result.MFO = getValue(ref pos, line, "МФО");
-            result.Account = getValue(ref pos, line, "Рахунок");
+            var temp = getValue(ref pos, line, "Наш рахунок (1)");
+            result.Account = getValue(ref pos, line, "Наш IBAN (2)");
+            var operation = getValue(ref pos, line, "Операція (3)");
+            temp = getValue(ref pos, line, "рахунок (4)");
+            result.ClientAccount = getValue(ref pos, line, "Рахунок кореспондента IBAN (5)");
+            result.ClientMFO = getValue(ref pos, line, "МФО банку контрагента (6)");
+            result.ClientName = getValue(ref pos, line, "Найменування контрагента (7)");
+            result.ClientEDRPOU = getValue(ref pos, line, "ЄДРПОУ кореспондента (8)");
+            result.Description = getValue(ref pos, line, "Призначення платежу (9)");
+            result.DateOperation = getDateValue(ref pos, line, "Дата проведення (10)");
+            result.DocummentNumber = getValue(ref pos, line, "Номер документа (11)");
+            decimal sum = getDecimalDateValue(ref pos, line, "Сума (12)");
             result.CurrencySymbolCode = getValue(ref pos, line, "Валюта");
-            result.DocummentNumber = getValue(ref pos, line, "Номер документа");
-            result.DateOperation = getDateValue(ref pos, line, "Дата операції");
-            result.ClientMFO = getValue(ref pos, line, "МФО банка");
-            result.ClientBankName = getValue(ref pos, line, "Назва банка");
-            result.ClientAccount = getValue(ref pos, line, "Рахунок кореспондента");
-            result.ClientEDRPOU = getValue(ref pos, line, "ЄДРПОУ кореспондента");
-            result.ClientName = getValue(ref pos, line, "Кореспондент");
-            result.Summ = getDecimalDateValue(ref pos, line, "Сума");
-            result.Description = getValue(ref pos, line, "Призначення платежу");
+            temp = getValue(ref pos, line, "Час проведення (13)");
+            temp = getValue(ref pos, line, "Дата документа (14)");
+            temp = getValue(ref pos, line, "Дата архівування (15)");
+            result.EDRPOU = getValue(ref pos, line, "ЄДРПОУ - Ід.код (16)");
+            temp = getValue(ref pos, line, "Найменування (17)");
+            result.MFO = getValue(ref pos, line, "МФО (18)");
+            if (operation.ToLower() == "Кредит".ToLower())
+                result.Summ = -sum;
+            else
+                result.Summ = sum;
+
+
             return result;
         }
     }
@@ -163,7 +177,7 @@ public class PrivatUAConverter : BaseConvertor
                 return false;
             }
 
-            if (string.IsNullOrEmpty(line.Trim()) || line.StartsWith("ЄДРПОУ") || line.StartsWith("ЕГРПОУ"))
+            if (string.IsNullOrEmpty(line.Trim()) || line.StartsWith("Наш рахунок;Наш IBAN;Операція;"))
             {
                 line = await reader.ReadLineAsync();
                 continue;
