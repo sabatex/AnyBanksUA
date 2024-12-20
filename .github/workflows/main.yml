@@ -1,6 +1,6 @@
 name: AnyBanksUA
 env:
-  PUBLISH_DIR: bin/Release/net9.0/publish/wwwroot
+  PUBLISH_DIR: WebApp/bin/Release/net9.0/publish/wwwroot
 
 # Controls when the action will run
 on:
@@ -77,3 +77,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         FOLDER: ${{ env.PUBLISH_DIR }}
+
