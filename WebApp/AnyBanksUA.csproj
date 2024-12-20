@@ -1,28 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
-  <PropertyGroup>
-	<TargetFramework>net9.0</TargetFramework>
-    	<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
-    	<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
-    	<Version>9.0.0-rc1</Version>
-        <Copyright>Serhiy Lakas</Copyright>
-    <UserSecretsId>a0ee92ff-d365-4c3f-ae66-44a9b12db8b1</UserSecretsId>
-  </PropertyGroup>
-  
-  <ItemGroup>
-	  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0" />
-	  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0" PrivateAssets="all" />
-	  <PackageReference Include="Sabatex.RadzenBlazor" Version="9.0.0" />
-	  <PackageReference Include="System.Net.Http.Json" Version="9.0.0" />
-	  <ProjectReference Include="..\BankStatementHelper\Sabatex.BankStatementHelper.csproj" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+		<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+		<Version>9.0.0-rc1</Version>
+		<Copyright>Serhiy Lakas</Copyright>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0" PrivateAssets="all" />
+		<PackageReference Include="Sabatex.RadzenBlazor" Version="9.0.0" />
+		<PackageReference Include="System.Net.Http.Json" Version="9.0.0" />
+		<ProjectReference Include="..\BankStatementHelper\Sabatex.BankStatementHelper.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\icons\" />
-  </ItemGroup>
+	<ItemGroup>
+		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="wwwroot\icons\" />
+	</ItemGroup>
 
 </Project>
