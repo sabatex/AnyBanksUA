@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: ls
@@ -20,9 +20,11 @@ jobs:
     # changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
     - name: Change base-tag in index.html from / to AnyBanksUA
       run: sed -i 's/<base href="\/" \/>/<base href="\/AnyBanksUA\/" \/>/g' wwwroot/index.html
+      working-directory: ./WebApp
 
     - name: Publish app
-      run: dotnet publish -c Release
+      run: dotnet publish    -c Release
+      working-directory: ./WebApp
       
     # changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
     #- name: Change base-tag in index.html from / to BankServiceFor1C8
