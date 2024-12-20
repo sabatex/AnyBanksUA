@@ -7,7 +7,7 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'WebAppAnyBanksUA.csproj'
+      - 'WebApp/AnyBanksUA.csproj'
 
 jobs:
   build:
