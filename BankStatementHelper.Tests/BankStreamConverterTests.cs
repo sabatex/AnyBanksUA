@@ -58,6 +58,7 @@ namespace sabatex.Tests.BankHelper
                     }
                     Assert.Equal(result.Count, lines);
                     var s = result.GetAsSensBankCSV();
+                    s = result.GetAsIBankUACSV();
                 }   
                 
 

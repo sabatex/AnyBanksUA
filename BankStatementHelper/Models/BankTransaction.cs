@@ -39,7 +39,7 @@ namespace Sabatex.BankStatementHelper.Models
         /// <summary>
         /// Назва банку АТ "СЕНС БАНК"
         /// </summary>
-        public string ClientBankName { get; set; }
+        public string ClientBankName { get; set; } = string.Empty;
         /// <summary>
         /// Рахунок кореспондента UAxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         /// </summary>
