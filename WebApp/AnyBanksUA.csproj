@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	<TargetFramework>net9.0</TargetFramework>
-    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+    	<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
     <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
     <Version>9.0.0-rc1</Version>
     <Copyright>Serhiy Lakas</Copyright>
