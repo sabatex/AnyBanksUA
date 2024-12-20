@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAppAnyBanksUA", "WebApp\WebAppAnyBanksUA.csproj", "{2C6A6F11-CFBA-4871-856D-52E23E2D05A3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sabatex.BankStatementHelper", "BankStatementHelper\Sabatex.BankStatementHelper.csproj", "{9D49E900-B5E5-4579-A398-D81F7205F079}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sabatex.BankStatementHelper.Tests", "BankStatementHelper.Tests\sabatex.BankStatementHelper.Tests.csproj", "{A0A23360-0B55-4EF7-9F4D-2CB127415DA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnyBanksUA", "WebApp\AnyBanksUA.csproj", "{F7C3C132-D820-4BD1-9DBC-886A036CF9CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2C6A6F11-CFBA-4871-856D-52E23E2D05A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2C6A6F11-CFBA-4871-856D-52E23E2D05A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2C6A6F11-CFBA-4871-856D-52E23E2D05A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2C6A6F11-CFBA-4871-856D-52E23E2D05A3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9D49E900-B5E5-4579-A398-D81F7205F079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9D49E900-B5E5-4579-A398-D81F7205F079}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D49E900-B5E5-4579-A398-D81F7205F079}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -27,6 +23,10 @@ Global
 		{A0A23360-0B55-4EF7-9F4D-2CB127415DA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0A23360-0B55-4EF7-9F4D-2CB127415DA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0A23360-0B55-4EF7-9F4D-2CB127415DA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7C3C132-D820-4BD1-9DBC-886A036CF9CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7C3C132-D820-4BD1-9DBC-886A036CF9CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7C3C132-D820-4BD1-9DBC-886A036CF9CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7C3C132-D820-4BD1-9DBC-886A036CF9CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

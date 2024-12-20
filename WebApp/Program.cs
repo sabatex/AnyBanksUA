@@ -14,7 +14,7 @@ using Sabatex.BankStatementHelper;
 using System.IO;
 
 
-namespace WebAppAnyBanksUA
+namespace AnyBanksUA
 {
     public class Program
     {
