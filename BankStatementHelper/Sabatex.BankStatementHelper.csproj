@@ -1,26 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net8.0;net9.0</TargetFrameworks>
+	<TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 
-    <Version>3.0.0-rc2</Version>
+    <Version>9.0.0-rc1</Version>
     <Company>sabatex</Company>
     <Authors>Serhiy Lakas</Authors>
     <Copyright>2018, Serhiy Lakas</Copyright>
     <Description>Library to convert bank statements from the bank format to standard format BAS </Description>
   </PropertyGroup>
 
-  
-   	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-		<PackageReference Include="sabatex.Extensions" Version="6.0.3"></PackageReference>
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
-		<PackageReference Include="sabatex.Extensions" Version="6.0.3"></PackageReference>
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
-		<PackageReference Include="sabatex.Extensions" Version="9.0.0"></PackageReference>
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Sabatex.Extensions" Version="9.0.1" />
+  </ItemGroup>
 
 </Project>

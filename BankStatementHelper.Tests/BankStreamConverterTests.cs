@@ -1,10 +1,12 @@
-﻿using Sabatex.BankStatementHelper;
+﻿using Sabatex.Extensions.Text;
+using Sabatex.BankStatementHelper;
 using Sabatex.BankStatementHelper.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,12 +45,13 @@ namespace sabatex.Tests.BankHelper
  
         }
         [Theory]
-        [InlineData(testFilePath + "/Privat24.csv", EBankType.PrivatUA, 21, "Privat24")]
-        [InlineData(testFilePath + "/Sense-Bank.csv", EBankType.SensBank, 32, "SensBank")]
-        public async void ParseBankStatement(string fileName, EBankType bankType, int lines, string name)
+        [InlineData(testFilePath + "/Privat24.csv", EBankType.PrivatUA, 21,12, "Privat24")]
+        [InlineData(testFilePath + "/Sense-Bank.csv", EBankType.SensBank, 32, -41871.79, "SensBank")]
+        public async void ParseBankStatement(string fileName, EBankType bankType, int lines,decimal sum, string name)
         {
             using (Stream stream = File.OpenRead(fileName))
             {
+                string destination = string.Empty;
                 await using (var collection = ConvertorExtensions.GetConvertor(bankType, stream, Path.GetExtension(fileName)))
                 {
                     var result = new List<BankTransaction>();
@@ -57,10 +60,31 @@ namespace sabatex.Tests.BankHelper
                         result.Add(item);
                     }
                     Assert.Equal(result.Count, lines);
+                    Assert.Equal(result.Sum(s=>s.Summ), sum);
+
                     var s = result.GetAsSensBankCSV();
-                    s = result.GetAsIBankUACSV();
-                }   
-                
+                    destination = result.GetAsIBankUACSV();
+
+                  }
+                //back test privat
+                //Encoding win1251 = Encoding.GetEncoding("windows-1251");
+                //byte[] win1251Bytes = Encoding.Convert(Encoding.UTF8, win1251, utf8Bytes);
+                //var mstream = new MemoryStream((new Encoding1251()).GetBytes(destination));
+                //await using (var collection = ConvertorExtensions.GetConvertor(EBankType.iBankUA, mstream, Path.GetExtension(fileName)))
+                //{
+                //    var result = new List<BankTransaction>();
+                //    await foreach (var item in collection)
+                //    {
+                //        result.Add(item);
+                //    }
+                //    Assert.Equal(result.Count, lines);
+                //    Assert.Equal(result.Sum(s => s.Summ), sum);
+
+                //}
+
+
+
+
 
 
             }

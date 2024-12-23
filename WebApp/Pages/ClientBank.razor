@@ -3,7 +3,7 @@
 @page "/basbanksutility/bas"
 @using System.IO
 @using Sabatex.BankStatementHelper
-@using sabatex.Extensions.ClassExtensions
+@using Sabatex.Extensions.ClassExtensions
 @using System.ComponentModel.DataAnnotations
 @using System.Reflection
 @using Sabatex.RadzenBlazor
@@ -31,6 +31,7 @@
     </RadzenColumn>
     <RadzenColumn>
         <RadzenText>Формат вихідного файла</RadzenText>
+        <SabatexEnumDropDown Placeholder="Кодування" TEnum="EncodingResult" @bind-Value="@encodingResult" />
         <RadzenRadioButtonList @bind-Value="@resultType" TValue="ResultType" Orientation="Radzen.Orientation.Vertical" class="rz-border-radius-1 rz-border-primary-dark ">
             <Items>
                 @{
@@ -99,6 +100,7 @@
 @code{
     private EBankType bankType = EBankType.SensBank;
     private ResultType resultType = ResultType.CSV_IBankUA;
+    private EncodingResult encodingResult = EncodingResult.UTF8;
     string accountNumber = "";
     string error = "";
     List<ResultTask> makeFiles = new List<ResultTask>();
@@ -169,7 +171,17 @@
                         resultTask.OutPutFile = f.Name + ".xml";
                         break;
                 }
-                await JSRuntime.InvokeAsync<object>("sabatex.downloadFile", resultTask.OutPutFile, txt);
+                byte[] bytes;
+                if (encodingResult == EncodingResult.UTF8)
+                {
+                    bytes = System.Text.Encoding.UTF8.GetBytes(txt);
+                }
+                else
+                {
+                    var win1251 = new Sabatex.Extensions.Text.Encoding1251();
+                    bytes = win1251.GetBytes(txt);
+                }
+                await JSRuntime.InvokeAsync<object>("sabatex.downloadFile", resultTask.OutPutFile, bytes);
   
             }
             catch (Exception e)
@@ -180,11 +192,6 @@
         }
     }
 
-
-    // void BankTypeChange(EBankType value)
-    // {
-    //     bankType = value;
-    // }
 
     override protected  void OnInitialized()
     {

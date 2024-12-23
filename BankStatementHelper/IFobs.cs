@@ -1,4 +1,4 @@
-﻿using sabatex.Extensions.Text;
+﻿using Sabatex.Extensions.Text;
 using System;
 using System.Collections.Generic;
 using System.IO;

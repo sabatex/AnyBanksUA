@@ -36,8 +36,8 @@ namespace Sabatex.BankStatementHelper
         public static string GetAsIBankUACSV(this IEnumerable<BankTransaction> bankTransactions)
         {
             string iBankData(DateTime date) => date.ToString("dd.MM.yyyy hh:mm");
-            string debet(decimal summ) => summ >= 0 ? summ.ToString("0.00") : "";
-            string credit(decimal summ) => summ < 0 ? (-summ).ToString("0.00") : "";
+            string debet(decimal summ) => summ >= 0 ? summ.ToString("0.00").Replace(',','.') : "";
+            string credit(decimal summ) => summ < 0 ? (-summ).ToString("0.00").Replace(',', '.') : "";
             string format(string s)
             {
                 if (s.Contains(';') || s.Contains('"'))

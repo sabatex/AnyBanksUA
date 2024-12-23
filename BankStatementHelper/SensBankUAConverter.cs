@@ -1,5 +1,5 @@
-﻿using sabatex.Extensions.ClassExtensions;
-using sabatex.Extensions.Text;
+﻿using Sabatex.Extensions.ClassExtensions;
+using Sabatex.Extensions.Text;
 using Sabatex.BankStatementHelper.Models;
 using System;
 using System.Collections.Generic;
